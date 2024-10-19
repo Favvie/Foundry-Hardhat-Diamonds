@@ -21,6 +21,22 @@ library LibDiamond {
     error NonEmptyCalldata();
     error EmptyCalldata();
     error InitCallFailed();
+
+    error ERC721InvalidOwner(address owner);
+
+
+    error ERC721NonexistentToken(uint256 tokenId);
+    error ERC721IncorrectOwner(address sender, uint256 tokenId, address owner);
+    error ERC721InvalidSender(address sender);
+    error ERC721InvalidReceiver(address receiver);
+    error ERC721InsufficientApproval(address operator, uint256 tokenId);
+    error ERC721InvalidApprover(address approver);
+    error ERC721InvalidOperator(address operator);
+
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+
     bytes32 constant DIAMOND_STORAGE_POSITION =
         keccak256("diamond.standard.diamond.storage");
 
@@ -47,6 +63,20 @@ library LibDiamond {
         mapping(bytes4 => bool) supportedInterfaces;
         // owner of the contract
         address contractOwner;
+
+        // token storage
+        string name;
+
+        // Token symbol
+        string symbol;
+
+        mapping(uint256 tokenId => address) owners;
+
+        mapping(address owner => uint256) balances;
+
+        mapping(uint256 tokenId => address) tokenApprovals;
+
+        mapping(address owner => mapping(address operator => bool)) operatorApprovals;
     }
 
     function diamondStorage()
