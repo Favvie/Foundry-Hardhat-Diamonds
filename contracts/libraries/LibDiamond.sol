@@ -50,17 +50,6 @@ library LibDiamond {
         uint256 facetAddressPosition; // position of facetAddress in facetAddresses array
     }
 
-    struct Loan {
-        uint256 loanId;
-        IERC721 NFT;
-        uint256 tokenId;
-        bool isActive;
-        address borrower;
-        uint256 estimatedValue;
-        uint256 interestate;
-        uint256 dueDate;
-    }
-
     struct DiamondStorage {
         // maps function selector to the facet address and
         // the position of the selector in the facetFunctionSelectors.selectors array
@@ -75,11 +64,19 @@ library LibDiamond {
         // owner of the contract
         address contractOwner;
 
+        // token storage
+        string name;
 
-        // ---------------------------NFT---------------------------
-        mapping(uint256 => Loan) loans;
-        mapping(address => mapping(uint256 => bool)) public nftUsedAsCollateral;
+        // Token symbol
+        string symbol;
 
+        mapping(uint256 tokenId => address) owners;
+
+        mapping(address owner => uint256) balances;
+
+        mapping(uint256 tokenId => address) tokenApprovals;
+
+        mapping(address owner => mapping(address operator => bool)) operatorApprovals;
     }
 
     function diamondStorage()
