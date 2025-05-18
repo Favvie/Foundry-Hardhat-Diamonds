@@ -21,6 +21,22 @@ library LibDiamond {
     error NonEmptyCalldata();
     error EmptyCalldata();
     error InitCallFailed();
+
+    error ERC721InvalidOwner(address owner);
+
+
+    error ERC721NonexistentToken(uint256 tokenId);
+    error ERC721IncorrectOwner(address sender, uint256 tokenId, address owner);
+    error ERC721InvalidSender(address sender);
+    error ERC721InvalidReceiver(address receiver);
+    error ERC721InsufficientApproval(address operator, uint256 tokenId);
+    error ERC721InvalidApprover(address approver);
+    error ERC721InvalidOperator(address operator);
+
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+
     bytes32 constant DIAMOND_STORAGE_POSITION =
         keccak256("diamond.standard.diamond.storage");
 
@@ -32,6 +48,17 @@ library LibDiamond {
     struct FacetFunctionSelectors {
         bytes4[] functionSelectors;
         uint256 facetAddressPosition; // position of facetAddress in facetAddresses array
+    }
+
+    struct Loan {
+        uint256 loanId;
+        IERC721 NFT;
+        uint256 tokenId;
+        bool isActive;
+        address borrower;
+        uint256 estimatedValue;
+        uint256 interestate;
+        uint256 dueDate;
     }
 
     struct DiamondStorage {
@@ -47,6 +74,12 @@ library LibDiamond {
         mapping(bytes4 => bool) supportedInterfaces;
         // owner of the contract
         address contractOwner;
+
+
+        // ---------------------------NFT---------------------------
+        mapping(uint256 => Loan) loans;
+        mapping(address => mapping(uint256 => bool)) public nftUsedAsCollateral;
+
     }
 
     function diamondStorage()

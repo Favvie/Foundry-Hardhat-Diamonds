@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-/******************************************************************************\
-* Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
-* EIP-2535 Diamonds: https://eips.ethereum.org/EIPS/eip-2535
-*
-* Implementation of a diamond.
-/******************************************************************************/
-
+/**
+ * \
+ * Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
+ * EIP-2535 Diamonds: https://eips.ethereum.org/EIPS/eip-2535
+ *
+ * Implementation of a diamond.
+ * /*****************************************************************************
+ */
 import {LibDiamond} from "../libraries/LibDiamond.sol";
 import {TokenStorage} from "../libraries/LibAppStorage.sol";
 import { IDiamondLoupe } from "../interfaces/IDiamondLoupe.sol";
@@ -34,8 +35,8 @@ contract DiamondInit {
         ds.supportedInterfaces[type(IDiamondLoupe).interfaceId] = true;
         ds.supportedInterfaces[type(IERC173).interfaceId] = true;
 
-        // add your own state variables 
-        // EIP-2535 specifies that the `diamondCut` function takes two optional 
+        // add your own state variables
+        // EIP-2535 specifies that the `diamondCut` function takes two optional
         // arguments: address _init and bytes calldata _calldata
         // These arguments are used to execute an arbitrary function using delegatecall
         // in order to set state variables in the diamond during deployment or an upgrade
@@ -44,6 +45,4 @@ contract DiamondInit {
        s.totalSupply = 1_000_000e18;
        s.initialized = 1;
     }
-
-
 }
