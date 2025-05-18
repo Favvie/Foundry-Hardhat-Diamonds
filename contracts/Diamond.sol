@@ -12,8 +12,16 @@ import {LibDiamond} from "./libraries/LibDiamond.sol";
 import {IDiamondCut} from "./interfaces/IDiamondCut.sol";
 
 contract Diamond {
-    constructor(address _contractOwner, address _diamondCutFacet) payable {
+    constructor(address _contractOwner, address _diamondCutFacet, string memory _name, string memory _symbol, uint8 _decimals) payable {
         LibDiamond.setContractOwner(_contractOwner);
+        
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+
+        ds.name = _name;
+        ds.symbol = _symbol;
+        ds.decimals = _decimals;
+
+        ds.name = _name;
 
         // Add the diamondCut external function from the diamondCutFacet
         IDiamondCut.FacetCut[] memory cut = new IDiamondCut.FacetCut[](1);
